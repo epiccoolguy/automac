@@ -66,3 +66,8 @@
       ansible.builtin.copy:
         src: home/
         dest: "{{ ansible_env.HOME }}"
+
+    - name: Copy omz theme files
+      ansible.builtin.copy:
+        src: zsh-theme/
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes"
