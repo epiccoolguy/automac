@@ -1,0 +1,63 @@
+- name: Install Homebrew
+  hosts: all
+  vars_prompt:
+    - name: password
+      private: true
+      prompt: "Password"
+
+  tasks:
+    - name: Check if 'Homebrew' is installed
+      ansible.builtin.shell: brew --version
+      register: brew_check
+      ignore_errors: true
+
+    - name: Install 'Homebrew'
+      ansible.builtin.shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      when: brew_check.rc != 0
+
+    - name: Install 'curl' formula
+      community.general.homebrew:
+        name: curl
+        state: present
+
+    - name: Install 'git' formula
+      community.general.homebrew:
+        name: git
+        state: present
+
+    - name: Install 'coreutils' formula
+      community.general.homebrew:
+        name: coreutils
+        state: present
+
+    - name: Install 'Alacritty' formula
+      community.general.homebrew:
+        name: alacritty
+        state: present
+
+    - name: Install 'Git Credential Manager' from cask
+      community.general.homebrew_cask:
+        name: git-credential-manager
+        state: present
+        sudo_password: "{{ password }}"
+
+    - name: Check if 'Oh My Zsh' is installed
+      ansible.builtin.shell: test -e ~/.oh-my-zsh/oh-my-zsh.sh
+      register: omz_check
+      ignore_errors: true
+
+    - name: Install 'Oh My Zsh'
+      ansible.builtin.shell: /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      when: omz_check.rc != 0
+
+    - name: Configure Git Name
+      community.general.git_config:
+        name: user.name
+        scope: global
+        value: "Miguel Lo-A-Foe"
+
+    - name: Configure Git Email
+      community.general.git_config:
+        name: user.email
+        scope: global
+        value: "miguel@loafoe.dev"
