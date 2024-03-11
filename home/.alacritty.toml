@@ -1,0 +1,9 @@
+[keyboard]
+bindings = [
+  # Move word by word
+  { key = "Right", mods = "Alt", chars = "\u001BF" },
+  { key = "Left", mods = "Alt", chars = "\u001BB" },
+  # Switch between tabs
+  { key = "Right", mods = "Alt | Super", action = "SelectNextTab" },
+  { key = "Left", mods = "Alt | Super", action = "SelectPreviousTab" },
+]
