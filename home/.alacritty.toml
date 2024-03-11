@@ -3,6 +3,9 @@ bindings = [
   # Move word by word
   { key = "Right", mods = "Alt", chars = "\u001BF" },
   { key = "Left", mods = "Alt", chars = "\u001BB" },
+  # Move to beginning/end of line
+  { key = "Right", mods = "Super", chars = "\u001BOF" },
+  { key = "Left", mods = "Super", chars = "\u001BOH" },
   # Switch between tabs
   { key = "Right", mods = "Alt | Super", action = "SelectNextTab" },
   { key = "Left", mods = "Alt | Super", action = "SelectPreviousTab" },
