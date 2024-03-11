@@ -1,0 +1,43 @@
+# Install .pkg inside .dmg
+
+- name: Check if SF Mono Fonts are installed
+  ansible.builtin.shell: test -e /Library/Fonts/SF-Mono-Regular.otf
+  register: sfmono_exists
+  ignore_errors: true
+
+- name: Create temporary file
+  command: mktemp
+  register: mktempf
+  when: sfmono_exists.rc != 0
+
+- name: Download SF Mono Fonts
+  command: curl -s https://devimages-cdn.apple.com/design/resources/download/SF-Mono.dmg -o {{ mktempf.stdout }}
+  when: sfmono_exists.rc != 0
+
+- name: Create temporary directory
+  command: mktemp -d
+  register: mktempd
+  when: sfmono_exists.rc != 0
+
+- name: Mount disk image
+  command: hdiutil attach {{ mktempf.stdout }} -nobrowse -mountpoint {{ mktempd.stdout }}
+  when: sfmono_exists.rc != 0
+
+- name: Install SF Mono Fonts
+  command: installer -pkg "{{ mktempd.stdout }}/SF Mono Fonts.pkg" -target /
+  vars:
+    ansible_become: true
+    ansible_become_password: "{{ password }}"
+  when: sfmono_exists.rc != 0
+
+- name: Unmount disk image
+  command: hdiutil detach -force {{ mktempd.stdout }}
+  when: sfmono_exists.rc != 0
+
+- name: Remove temporary directory
+  command: rm -rf {{ mktempd.stdout }}
+  when: sfmono_exists.rc != 0
+
+- name: Remove temporary file
+  command: rm -f {{ mktempf.stdout }}
+  when: sfmono_exists.rc != 0

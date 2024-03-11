@@ -1,3 +1,6 @@
+[font]
+normal = { family = "SF Mono", style = "Regular" }
+
 [keyboard]
 bindings = [
   # Move word by word

@@ -1,4 +1,4 @@
-- name: Install Homebrew
+- name: Install Mac Developer Tools
   hosts: all
   vars_prompt:
     - name: password
@@ -33,6 +33,11 @@
     - name: Install 'Alacritty' formula
       community.general.homebrew:
         name: alacritty
+        state: present
+
+    - name: Install 'jq' formula
+      community.general.homebrew:
+        name: jq
         state: present
 
     - name: Install 'Git Credential Manager' from cask
@@ -71,3 +76,6 @@
       ansible.builtin.copy:
         src: zsh-theme/
         dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes"
+
+    - import_tasks: tasks/install-sf-mono.yaml
+      tags: [fonts]
