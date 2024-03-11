@@ -61,3 +61,8 @@
         name: user.email
         scope: global
         value: "miguel@loafoe.dev"
+
+    - name: Copy home directory files
+      ansible.builtin.copy:
+        src: home/
+        dest: "{{ ansible_env.HOME }}"
