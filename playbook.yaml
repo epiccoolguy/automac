@@ -40,6 +40,11 @@
         name: jq
         state: present
 
+    - name: Install 'mas' formula
+      community.general.homebrew:
+        name: mas
+        state: present
+
     - name: Install 'Git Credential Manager' from cask
       community.general.homebrew_cask:
         name: git-credential-manager
