@@ -79,3 +79,6 @@
 
     - import_tasks: tasks/install-sf-mono.yaml
       tags: [fonts]
+
+    - import_tasks: tasks/install-vs-code.yaml
+      tags: [fonts]

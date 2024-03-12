@@ -1,0 +1,27 @@
+# Install .app inside .zip
+
+- name: Check if VS Code is installed
+  ansible.builtin.shell: test -e '/Applications/Visual Studio Code.app'
+  register: vsc_exists
+  ignore_errors: true
+
+- name: Create temporary file
+  command: mktemp
+  register: mktempf
+  when: vsc_exists.rc != 0
+
+- name: Download VS Code
+  command: curl -sLo {{ mktempf.stdout }} 'https://code.visualstudio.com/sha/download?build=stable&os=darwin-arm64'
+  when: vsc_exists.rc != 0
+
+- name: Extract application
+  command: unzip -oq {{ mktempf.stdout }}
+  when: vsc_exists.rc != 0
+
+- name: Move application
+  command: mv 'Visual Studio Code.app' /Applications
+  when: vsc_exists.rc != 0
+
+- name: Remove temporary file
+  command: rm -f {{ mktempf.stdout }}
+  when: vsc_exists.rc != 0
