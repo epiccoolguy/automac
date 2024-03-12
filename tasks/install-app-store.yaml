@@ -1,0 +1,16 @@
+# Install App Store apps using mas
+
+- name: Install 'Magnet'
+  ansible.builtin.shell: mas install 441258766
+
+- name: Install '1Password for Safari'
+  ansible.builtin.shell: mas install 1569813296
+
+- name: Install 'AdGuard for Safari'
+  ansible.builtin.shell: mas install 1440147259
+
+- name: Install 'Dark Reader for Safari'
+  ansible.builtin.shell: mas install 1438243180
+
+- name: Install 'Consent-O-Matic'
+  ansible.builtin.shell: mas install 1606897889

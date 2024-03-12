@@ -90,3 +90,6 @@
 
     - import_tasks: tasks/install-docker.yaml
       tags: [containers]
+
+    - import_tasks: tasks/install-app-store.yaml
+      tags: [appstore]
