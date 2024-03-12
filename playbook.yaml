@@ -81,4 +81,7 @@
       tags: [fonts]
 
     - import_tasks: tasks/install-vs-code.yaml
-      tags: [fonts]
+      tags: [editors]
+
+    - import_tasks: tasks/install-docker.yaml
+      tags: [containers]
