@@ -1,0 +1,27 @@
+# Install bash
+
+- name: Install bash using brew
+  community.general.homebrew:
+    name: bash
+    state: present
+
+- name: Get brew binary prefix
+  ansible.builtin.command: brew --prefix
+  register: brew_prefix
+  changed_when: brew_prefix.rc != 0
+
+- name: Allow bash as login shell
+  ansible.builtin.command: grep -qxF "{{ brew_prefix.stdout }}/bin/bash" /etc/shells || echo "{{ brew_prefix.stdout }}/bin/bash" >> /etc/shells
+  vars:
+    ansible_become: true
+    ansible_become_password: "{{ password }}"
+  register: allowed
+  changed_when: allowed.rc != 0
+
+- name: Set bash as login shell
+  ansible.builtin.command: usermod --shell "{{ brew_prefix.stdout }}/bin/bash" {{ ansible_env.USER }}
+  vars:
+    ansible_become: true
+    ansible_become_password: "{{ password }}"
+  register: default
+  changed_when: default.rc != 0

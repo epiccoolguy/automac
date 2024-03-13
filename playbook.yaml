@@ -15,6 +15,9 @@
       ansible.builtin.shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       when: brew_check.rc != 0
 
+    - import_tasks: tasks/install-bash.yaml
+      tags: [bash]
+
     - name: Install 'curl' formula
       community.general.homebrew:
         name: curl
