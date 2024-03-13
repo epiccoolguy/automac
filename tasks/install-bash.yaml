@@ -19,9 +19,9 @@
   changed_when: allowed.rc != 0
 
 - name: Set bash as login shell
-  ansible.builtin.command: usermod --shell "{{ brew_prefix.stdout }}/bin/bash" {{ ansible_env.USER }}
+  ansible.builtin.user:
+    name: "{{ ansible_env.USER }}"
+    shell: "{{ brew_prefix.stdout }}/bin/bash"
   vars:
     ansible_become: true
     ansible_become_password: "{{ password }}"
-  register: default
-  changed_when: default.rc != 0
