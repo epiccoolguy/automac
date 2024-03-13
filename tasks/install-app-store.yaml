@@ -1,8 +1,5 @@
 # Install App Store apps using mas
 
-- name: Install 'Magnet'
-  ansible.builtin.shell: mas install 441258766
-
 - name: Install '1Password for Safari'
   ansible.builtin.shell: mas install 1569813296
 

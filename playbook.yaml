@@ -45,6 +45,11 @@
         name: mas
         state: present
 
+    - name: Install 'amethyst' from cask
+      community.general.homebrew_cask:
+        name: amethyst
+        state: present
+
     - name: Install 'Git Credential Manager' from cask
       community.general.homebrew_cask:
         name: git-credential-manager
