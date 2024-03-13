@@ -5,59 +5,26 @@
       private: true
       prompt: "Password"
 
+  vars:
+    homebrew_installed_packages:
+      - bash
+      - alacritty
+      - coreutils
+      - curl
+      - git
+      - jq
+
+    homebrew_cask_appdir: /Applications
+    homebrew_cask_apps:
+      - amethyst
+      - git-credential-manager
+
+  roles:
+    - geerlingguy.mac.homebrew
+
   tasks:
-    - name: Check if 'Homebrew' is installed
-      ansible.builtin.shell: brew --version
-      register: brew_check
-      ignore_errors: true
-
-    - name: Install 'Homebrew'
-      ansible.builtin.shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      when: brew_check.rc != 0
-
-    - import_tasks: tasks/install-bash.yaml
+    - import_tasks: tasks/configure-bash.yaml
       tags: [bash]
-
-    - name: Install 'curl' formula
-      community.general.homebrew:
-        name: curl
-        state: present
-
-    - name: Install 'git' formula
-      community.general.homebrew:
-        name: git
-        state: present
-
-    - name: Install 'coreutils' formula
-      community.general.homebrew:
-        name: coreutils
-        state: present
-
-    - name: Install 'Alacritty' formula
-      community.general.homebrew:
-        name: alacritty
-        state: present
-
-    - name: Install 'jq' formula
-      community.general.homebrew:
-        name: jq
-        state: present
-
-    - name: Install 'mas' formula
-      community.general.homebrew:
-        name: mas
-        state: present
-
-    - name: Install 'amethyst' from cask
-      community.general.homebrew_cask:
-        name: amethyst
-        state: present
-
-    - name: Install 'Git Credential Manager' from cask
-      community.general.homebrew_cask:
-        name: git-credential-manager
-        state: present
-        sudo_password: "{{ password }}"
 
     - name: Check if 'Oh My Zsh' is installed
       ansible.builtin.shell: test -e ~/.oh-my-zsh/oh-my-zsh.sh

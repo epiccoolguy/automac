@@ -1,9 +1,4 @@
-# Install bash
-
-- name: Install bash using brew
-  community.general.homebrew:
-    name: bash
-    state: present
+# Configure bash
 
 - name: Get brew binary prefix
   ansible.builtin.command: brew --prefix
