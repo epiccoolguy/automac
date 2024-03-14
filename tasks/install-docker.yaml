@@ -1,43 +1,44 @@
-# Install .dmg
+# code: language=ansible
 
 - name: Check if Docker is installed
-  ansible.builtin.shell: test -e '/Applications/Docker.app'
+  ansible.builtin.stat:
+    path: "/Applications/Docker.app"
   register: docker_exists
-  ignore_errors: true
 
-- name: Create temporary file
-  command: mktemp
-  register: mktempf
-  when: docker_exists.rc != 0
+- name: Create temporary directory for Docker files
+  ansible.builtin.tempfile:
+    state: directory
+  register: docker_mktempd
+  when: not docker_exists.stat.exists
 
 - name: Download Docker
-  command: curl -sLo {{ mktempf.stdout }} 'https://desktop.docker.com/mac/main/arm64/Docker.dmg'
-  when: docker_exists.rc != 0
-
-- name: Create temporary directory
-  command: mktemp -d
-  register: mktempd
-  when: docker_exists.rc != 0
+  ansible.builtin.get_url:
+    url: "https://desktop.docker.com/mac/main/arm64/Docker.dmg"
+    dest: "{{ docker_mktempd.path }}/Docker.dmg"
+    mode: "0644"
+  when: not docker_exists.stat.exists
 
 - name: Mount disk image
-  command: hdiutil attach {{ mktempf.stdout }} -nobrowse -mountpoint {{ mktempd.stdout }}
-  when: docker_exists.rc != 0
+  ansible.builtin.command: hdiutil attach "{{ docker_mktempd.path }}/Docker.dmg" -nobrowse -mountpoint "{{ docker_mktempd.path }}/Docker"
+  register: docker_mount
+  changed_when: docker_mount.rc != 0
+  when: not docker_exists.stat.exists
 
 - name: Install Docker
-  command: "{{ mktempd.stdout }}/Docker.app/Contents/MacOS/install --accept-license"
-  vars:
-    ansible_become: true
-    ansible_become_password: "{{ password }}"
-  when: docker_exists.rc != 0
+  ansible.builtin.command: "{{ docker_mktempd.path }}/Docker/Docker.app/Contents/MacOS/install --accept-license"
+  become: true
+  register: docker_install
+  changed_when: docker_install.rc != 0
+  when: not docker_exists.stat.exists
 
 - name: Unmount disk image
-  command: hdiutil detach -force {{ mktempd.stdout }}
-  when: docker_exists.rc != 0
+  ansible.builtin.command: hdiutil detach "{{ docker_mktempd.path }}/Docker"
+  register: docker_unmount
+  changed_when: docker_unmount.rc != 0
+  when: not docker_exists.stat.exists
 
 - name: Remove temporary directory
-  command: rm -rf {{ mktempd.stdout }}
-  when: docker_exists.rc != 0
-
-- name: Remove temporary file
-  command: rm -f {{ mktempf.stdout }}
-  when: docker_exists.rc != 0
+  ansible.builtin.file:
+    path: "{{ docker_mktempd.path }}"
+    state: absent
+  when: docker_mktempd.path is defined

@@ -31,6 +31,10 @@
       ansible.builtin.import_tasks: tasks/install-vs-code.yaml
       tags: [editors]
 
+    - name: Install Docker
+      ansible.builtin.import_tasks: tasks/install-docker.yaml
+      tags: [containers]
+
     # - name: Check if 'Oh My Zsh' is installed
     #   ansible.builtin.shell: test -e ~/.oh-my-zsh/oh-my-zsh.sh
     #   register: omz_check
@@ -61,9 +65,6 @@
     #   ansible.builtin.copy:
     #     src: zsh-theme/
     #     dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes"
-
-    # - import_tasks: tasks/install-docker.yaml
-    #   tags: [containers]
 
     # - import_tasks: tasks/install-app-store.yaml
     #   tags: [appstore]
