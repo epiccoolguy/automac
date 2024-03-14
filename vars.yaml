@@ -10,3 +10,6 @@ homebrew_formulas:
 homebrew_casks:
   - amethyst
   - git-credential-manager
+
+git_user_name: "Miguel Lo-A-Foe"
+git_user_email: "miguel@loafoe.dev"

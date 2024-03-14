@@ -35,6 +35,10 @@
       ansible.builtin.import_tasks: tasks/install-docker.yaml
       tags: [containers]
 
+    - name: Install Git
+      ansible.builtin.import_tasks: tasks/install-git.yaml
+      tags: [version-control]
+
     - name: Copy home directory files
       ansible.builtin.copy:
         src: home/
