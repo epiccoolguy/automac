@@ -35,45 +35,45 @@
       ansible.builtin.import_tasks: tasks/install-bash.yaml
       tags: [bash]
 
-    - name: Check if 'Oh My Zsh' is installed
-      ansible.builtin.shell: test -e ~/.oh-my-zsh/oh-my-zsh.sh
-      register: omz_check
-      ignore_errors: true
+    # - name: Check if 'Oh My Zsh' is installed
+    #   ansible.builtin.shell: test -e ~/.oh-my-zsh/oh-my-zsh.sh
+    #   register: omz_check
+    #   ignore_errors: true
 
-    - name: Install 'Oh My Zsh'
-      ansible.builtin.shell: /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-      when: omz_check.rc != 0
+    # - name: Install 'Oh My Zsh'
+    #   ansible.builtin.shell: /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    #   when: omz_check.rc != 0
 
-    - name: Configure Git Name
-      community.general.git_config:
-        name: user.name
-        scope: global
-        value: "Miguel Lo-A-Foe"
+    # - name: Configure Git Name
+    #   community.general.git_config:
+    #     name: user.name
+    #     scope: global
+    #     value: "Miguel Lo-A-Foe"
 
-    - name: Configure Git Email
-      community.general.git_config:
-        name: user.email
-        scope: global
-        value: "miguel@loafoe.dev"
+    # - name: Configure Git Email
+    #   community.general.git_config:
+    #     name: user.email
+    #     scope: global
+    #     value: "miguel@loafoe.dev"
 
-    - name: Copy home directory files
-      ansible.builtin.copy:
-        src: home/
-        dest: "{{ ansible_env.HOME }}"
+    # - name: Copy home directory files
+    #   ansible.builtin.copy:
+    #     src: home/
+    #     dest: "{{ ansible_env.HOME }}"
 
-    - name: Copy omz theme files
-      ansible.builtin.copy:
-        src: zsh-theme/
-        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes"
+    # - name: Copy omz theme files
+    #   ansible.builtin.copy:
+    #     src: zsh-theme/
+    #     dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes"
 
-    - import_tasks: tasks/install-sf-mono.yaml
-      tags: [fonts]
+    # - import_tasks: tasks/install-sf-mono.yaml
+    #   tags: [fonts]
 
-    - import_tasks: tasks/install-vs-code.yaml
-      tags: [editors]
+    # - import_tasks: tasks/install-vs-code.yaml
+    #   tags: [editors]
 
-    - import_tasks: tasks/install-docker.yaml
-      tags: [containers]
+    # - import_tasks: tasks/install-docker.yaml
+    #   tags: [containers]
 
-    - import_tasks: tasks/install-app-store.yaml
-      tags: [appstore]
+    # - import_tasks: tasks/install-app-store.yaml
+    #   tags: [appstore]
