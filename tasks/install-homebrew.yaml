@@ -24,7 +24,11 @@
   when: not brew_exists.stat.exists
 
 - name: Parse Homebrew package download URL
-  ansible.builtin.shell: 'grep -o ''"browser_download_url": "[^"]*pkg'' {{ brew_release_info.dest }} | grep -o ''[^"]*$'''
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      grep -o '"browser_download_url": "[^"]*pkg' {{ brew_release_info.dest }} | grep -o '[^"]*$'
+    executable: /bin/bash
   register: brew_pkg_url
   changed_when: brew_pkg_url.rc != 0
   when: not brew_exists.stat.exists
@@ -40,10 +44,11 @@
     url: "{{ brew_pkg_url.stdout }}"
     dest: "{{ mktempf_brew_pkg.path }}"
     mode: "0644"
+  register: brew_pkg
   when: not brew_exists.stat.exists
 
 - name: Install Homebrew package
-  ansible.builtin.command: installer -pkg "{{ mktempf_brew_pkg.path }}" -target /
+  ansible.builtin.command: installer -pkg "{{ brew_pkg.dest }}" -target /
   become: true
   register: brew_pkg_install
   changed_when: brew_pkg_install.rc != 0
@@ -62,9 +67,12 @@
   when: mktempf_brew_pkg.path is defined
 
 - name: Add Homebrew to shell profile
-  ansible.builtin.shell: |
-    grep -qxF 'eval "$({{ homebrew_path }}/bin/brew shellenv)"' "{{ ansible_env.HOME }}/.bash_profile" || \
-    echo 'eval "$({{ homebrew_path }}/bin/brew shellenv)"' >> "{{ ansible_env.HOME }}/.bash_profile"
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      grep -qxF 'eval "$({{ homebrew_path }}/bin/brew shellenv)"' "{{ ansible_env.HOME }}/.bash_profile" || \
+      echo 'eval "$({{ homebrew_path }}/bin/brew shellenv)"' >> "{{ ansible_env.HOME }}/.bash_profile"
+    executable: /bin/bash
   register: brew_shellenv
   changed_when: brew_shellenv.rc != 0
   when: not brew_exists.stat.exists
