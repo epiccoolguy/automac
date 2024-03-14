@@ -1,27 +1,39 @@
-# Install .app inside .zip
+# code: language=ansible
 
 - name: Check if VS Code is installed
-  ansible.builtin.shell: test -e '/Applications/Visual Studio Code.app'
+  ansible.builtin.stat:
+    path: "/Applications/Visual Studio Code.app"
   register: vsc_exists
-  ignore_errors: true
 
-- name: Create temporary file
-  command: mktemp
-  register: mktempf
-  when: vsc_exists.rc != 0
+- name: Create temporary directory for VS Code files
+  ansible.builtin.tempfile:
+    state: directory
+  register: vsc_mktempd
+  when: not vsc_exists.stat.exists
 
 - name: Download VS Code
-  command: curl -sLo {{ mktempf.stdout }} 'https://code.visualstudio.com/sha/download?build=stable&os=darwin-arm64'
-  when: vsc_exists.rc != 0
+  ansible.builtin.get_url:
+    url: "https://code.visualstudio.com/sha/download?build=stable&os=darwin-arm64"
+    dest: "{{ vsc_mktempd.path }}/vscode.zip"
+    mode: "0644"
+  register: vsc_download
+  when: not vsc_exists.stat.exists
 
 - name: Extract application
-  command: unzip -oq {{ mktempf.stdout }}
-  when: vsc_exists.rc != 0
+  ansible.builtin.unarchive:
+    src: "{{ vsc_download.dest }}"
+    dest: "{{ vsc_mktempd.path }}"
+    remote_src: true
+  when: not vsc_exists.stat.exists
 
 - name: Move application
-  command: mv 'Visual Studio Code.app' /Applications
-  when: vsc_exists.rc != 0
+  ansible.builtin.command: mv "{{ vsc_mktempd.path }}/Visual Studio Code.app" /Applications
+  register: vsc_move
+  changed_when: vsc_move.rc != 0
+  when: not vsc_exists.stat.exists
 
-- name: Remove temporary file
-  command: rm -f {{ mktempf.stdout }}
-  when: vsc_exists.rc != 0
+- name: Remove temporary VS Code directory
+  ansible.builtin.file:
+    path: "{{ vsc_mktempd.path }}"
+    state: absent
+  when: vsc_mktempd.path is defined
