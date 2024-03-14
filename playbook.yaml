@@ -35,14 +35,11 @@
       ansible.builtin.import_tasks: tasks/install-docker.yaml
       tags: [containers]
 
-    # - name: Check if 'Oh My Zsh' is installed
-    #   ansible.builtin.shell: test -e ~/.oh-my-zsh/oh-my-zsh.sh
-    #   register: omz_check
-    #   ignore_errors: true
-
-    # - name: Install 'Oh My Zsh'
-    #   ansible.builtin.shell: /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    #   when: omz_check.rc != 0
+    - name: Copy home directory files
+      ansible.builtin.copy:
+        src: home/
+        dest: "{{ ansible_env.HOME }}"
+        mode: "0644"
 
     # - name: Configure Git Name
     #   community.general.git_config:
@@ -55,16 +52,6 @@
     #     name: user.email
     #     scope: global
     #     value: "miguel@loafoe.dev"
-
-    # - name: Copy home directory files
-    #   ansible.builtin.copy:
-    #     src: home/
-    #     dest: "{{ ansible_env.HOME }}"
-
-    # - name: Copy omz theme files
-    #   ansible.builtin.copy:
-    #     src: zsh-theme/
-    #     dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes"
 
     # - import_tasks: tasks/install-app-store.yaml
     #   tags: [appstore]
