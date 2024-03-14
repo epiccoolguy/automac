@@ -1,5 +1,9 @@
 - name: Install Mac Developer Tools
   hosts: all
+
+  vars_files:
+    - vars.yaml
+
   vars_prompt:
     - name: password
       private: true
@@ -19,10 +23,13 @@
       - amethyst
       - git-credential-manager
 
-  roles:
-    - geerlingguy.mac.homebrew
+  # roles:
+  #   - geerlingguy.mac.homebrew
 
   tasks:
+    - import_tasks: tasks/install-homebrew.yaml
+      tags: [homebrew]
+
     - import_tasks: tasks/configure-bash.yaml
       tags: [bash]
 

@@ -1,0 +1,70 @@
+# Install .pkg
+
+# curl -s https://api.github.com/repos/Homebrew/brew/releases/latest | grep -o '"browser_download_url": "[^"]*pkg' | grep -o '[^"]*$'
+
+# curl -fsSLo 'Homebrew.pkg' https://github.com/Homebrew/brew/releases/download/4.2.12/Homebrew-4.2.12.pkg
+
+- name: Check if Homebrew is installed
+  ansible.builtin.stat:
+    path: "{{ homebrew_path }}/bin/brew"
+  register: brew_exists
+
+- name: Create temporary file for Homebrew release info
+  ansible.builtin.tempfile:
+    state: file
+  register: mktempf_brew_info
+  when: not brew_exists.stat.exists
+
+- name: Download latest Homebrew release info
+  ansible.builtin.get_url:
+    url: https://api.github.com/repos/Homebrew/brew/releases/latest
+    dest: "{{ mktempf_brew_info.path }}"
+    mode: "0644"
+  register: brew_release_info
+  when: not brew_exists.stat.exists
+
+- name: Parse Homebrew package download URL
+  ansible.builtin.command: 'grep -o ''"browser_download_url": "[^"]*pkg'' {{ brew_release_info.dest }} | grep -o ''[^"]*$'''
+  register: brew_pkg_url
+  changed_when: brew_pkg_url.rc != 0
+  when: not brew_exists.stat.exists
+
+- name: Create temporary file for Homebrew package
+  ansible.builtin.tempfile:
+    state: file
+  register: mktempf_brew_pkg
+  when: not brew_exists.stat.exists
+
+- name: Download Homebrew package
+  ansible.builtin.get_url:
+    url: "{{ brew_pkg_url.stdout }}"
+    dest: "{{ mktempf_brew_pkg.path }}"
+    mode: "0644"
+  when: not brew_exists.stat.exists
+
+- name: Install Homebrew package
+  ansible.builtin.command: installer -pkg "{{ mktempf_brew_pkg.path }}" -target /
+  become: true
+  register: brew_pkg_install
+  changed_when: brew_pkg_install.rc != 0
+  when: not brew_exists.stat.exists
+
+- name: Remove temporary Homebrew release info file
+  ansible.builtin.file:
+    path: "{{ mktempf_brew_info.path }}"
+    state: absent
+  when: mktempf_brew_info.path is defined
+
+- name: Remove temporary Homebrew package file
+  ansible.builtin.file:
+    path: "{{ mktempf_brew_pkg.path }}"
+    state: absent
+  when: mktempf_brew_pkg.path is defined
+
+- name: Add Homebrew to shell profile
+  ansible.builtin.command: |
+    grep -qxF 'eval "$({{ homebrew_path }}/bin/brew shellenv)"' "{{ ansible_env.HOME }}/.bash_profile" || \
+    echo 'eval "$({{ homebrew_path }}/bin/brew shellenv)"' >> "{{ ansible_env.HOME }}/.bash_profile"
+  register: brew_shellenv
+  changed_when: brew_shellenv.rc != 0
+  when: not brew_exists.stat.exists
