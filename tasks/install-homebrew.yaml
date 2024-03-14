@@ -9,16 +9,16 @@
     path: "{{ homebrew_path }}/bin/brew"
   register: brew_exists
 
-- name: Create temporary file for Homebrew release info
+- name: Create temporary directory for Homebrew files
   ansible.builtin.tempfile:
-    state: file
-  register: mktempf_brew_info
+    state: directory
+  register: brew_mktempd
   when: not brew_exists.stat.exists
 
 - name: Download latest Homebrew release info
   ansible.builtin.get_url:
     url: https://api.github.com/repos/Homebrew/brew/releases/latest
-    dest: "{{ mktempf_brew_info.path }}"
+    dest: "{{ brew_mktempd.path }}/Homebrew.json"
     mode: "0644"
   register: brew_release_info
   when: not brew_exists.stat.exists
@@ -33,16 +33,10 @@
   changed_when: brew_pkg_url.rc != 0
   when: not brew_exists.stat.exists
 
-- name: Create temporary file for Homebrew package
-  ansible.builtin.tempfile:
-    state: file
-  register: mktempf_brew_pkg
-  when: not brew_exists.stat.exists
-
 - name: Download Homebrew package
   ansible.builtin.get_url:
     url: "{{ brew_pkg_url.stdout }}"
-    dest: "{{ mktempf_brew_pkg.path }}"
+    dest: "{{ brew_mktempd.path }}/Homebrew.pkg"
     mode: "0644"
   register: brew_pkg
   when: not brew_exists.stat.exists
@@ -54,17 +48,11 @@
   changed_when: brew_pkg_install.rc != 0
   when: not brew_exists.stat.exists
 
-- name: Remove temporary Homebrew release info file
+- name: Remove temporary Homebrew directory
   ansible.builtin.file:
-    path: "{{ mktempf_brew_info.path }}"
+    path: "{{ brew_mktempd.path }}"
     state: absent
-  when: mktempf_brew_info.path is defined
-
-- name: Remove temporary Homebrew package file
-  ansible.builtin.file:
-    path: "{{ mktempf_brew_pkg.path }}"
-    state: absent
-  when: mktempf_brew_pkg.path is defined
+  when: brew_mktempd.path is defined
 
 - name: Add Homebrew to shell profile
   ansible.builtin.shell:
