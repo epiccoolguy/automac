@@ -1,0 +1,8 @@
+# code: language=ansible
+
+- name: Install Homebrew casks
+  community.general.homebrew_cask:
+    name: "{{ item }}"
+    state: present
+    sudo_password: "{{ ansible_become_password | default(omit) }}"
+  loop: "{{ homebrew_casks }}"

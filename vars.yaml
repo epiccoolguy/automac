@@ -7,6 +7,6 @@ homebrew_formulas:
   - git
   - jq
 
-homebrew_cask_apps:
+homebrew_casks:
   - amethyst
   - git-credential-manager
