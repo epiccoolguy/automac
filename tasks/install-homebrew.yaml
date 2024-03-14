@@ -27,7 +27,7 @@
   ansible.builtin.shell:
     cmd: |
       set -o pipefail
-      grep -o '"browser_download_url": "[^"]*pkg' {{ brew_release_info.dest }} | grep -o '[^"]*$'
+      grep -o '"browser_download_url":"[^"]*pkg' {{ brew_release_info.dest }} | grep -o '[^"]*$'
     executable: /bin/bash
   register: brew_pkg_url
   changed_when: brew_pkg_url.rc != 0
