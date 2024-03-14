@@ -1,13 +1,26 @@
-# Install App Store apps using mas
+# code: language=ansible
+
+- name: Install a list of apps # noqa: args[module]
+  community.general.mas:
+    id: "{{ appstore_apps }}"
+    state: present
 
 - name: Install '1Password for Safari'
-  ansible.builtin.shell: mas install 1569813296
+  ansible.builtin.command: mas install 1569813296
+  register: op_install
+  changed_when: op_install.rc != 0
 
 - name: Install 'AdGuard for Safari'
-  ansible.builtin.shell: mas install 1440147259
+  ansible.builtin.command: mas install 1440147259
+  register: ag_install
+  changed_when: ag_install.rc != 0
 
 - name: Install 'Dark Reader for Safari'
-  ansible.builtin.shell: mas install 1438243180
+  ansible.builtin.command: mas install 1438243180
+  register: dr_install
+  changed_when: dr_install.rc != 0
 
 - name: Install 'Consent-O-Matic'
-  ansible.builtin.shell: mas install 1606897889
+  ansible.builtin.command: mas install 1606897889
+  register: com_install
+  changed_when: com_install.rc != 0

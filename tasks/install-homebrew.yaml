@@ -1,8 +1,4 @@
-# Install .pkg
-
-# curl -s https://api.github.com/repos/Homebrew/brew/releases/latest | grep -o '"browser_download_url": "[^"]*pkg' | grep -o '[^"]*$'
-
-# curl -fsSLo 'Homebrew.pkg' https://github.com/Homebrew/brew/releases/download/4.2.12/Homebrew-4.2.12.pkg
+# code: language=ansible
 
 - name: Check if Homebrew is installed
   ansible.builtin.stat:

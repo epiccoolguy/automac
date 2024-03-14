@@ -1,4 +1,4 @@
-# Configure bash
+# code: language=ansible
 
 - name: Install 'bash' formula
   community.general.homebrew:

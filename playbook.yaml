@@ -39,23 +39,12 @@
       ansible.builtin.import_tasks: tasks/install-git.yaml
       tags: [version-control]
 
+    - name: Install App Store apps
+      ansible.builtin.import_tasks: tasks/install-app-store.yaml
+      tags: [appstore]
+
     - name: Copy home directory files
       ansible.builtin.copy:
         src: home/
         dest: "{{ ansible_env.HOME }}"
         mode: "0644"
-
-    # - name: Configure Git Name
-    #   community.general.git_config:
-    #     name: user.name
-    #     scope: global
-    #     value: "Miguel Lo-A-Foe"
-
-    # - name: Configure Git Email
-    #   community.general.git_config:
-    #     name: user.email
-    #     scope: global
-    #     value: "miguel@loafoe.dev"
-
-    # - import_tasks: tasks/install-app-store.yaml
-    #   tags: [appstore]
