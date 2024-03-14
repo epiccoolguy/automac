@@ -1,0 +1,21 @@
+# Configure bash
+
+- name: Install 'bash' formula
+  community.general.homebrew:
+    name: bash
+    state: present
+
+- name: Allow Bash as login shell
+  ansible.builtin.shell:
+    cmd: |
+      grep -qxF "{{ homebrew_path }}/bin/bash" /etc/shells || echo "{{ homebrew_path }}/bin/bash" >> /etc/shells
+    executable: /bin/bash
+  become: true
+  register: allowed
+  changed_when: allowed.rc != 0
+
+- name: Set Bash as login shell
+  ansible.builtin.user:
+    name: "{{ ansible_env.USER }}"
+    shell: "{{ homebrew_path }}/bin/bash"
+  become: true

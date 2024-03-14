@@ -27,10 +27,12 @@
   #   - geerlingguy.mac.homebrew
 
   tasks:
-    - import_tasks: tasks/install-homebrew.yaml
+    - name: Install Homebrew
+      ansible.builtin.import_tasks: tasks/install-homebrew.yaml
       tags: [homebrew]
 
-    - import_tasks: tasks/configure-bash.yaml
+    - name: Install Bash
+      ansible.builtin.import_tasks: tasks/install-bash.yaml
       tags: [bash]
 
     - name: Check if 'Oh My Zsh' is installed
