@@ -1,0 +1,7 @@
+# code: language=ansible
+
+- name: Install Homebrew formulas
+  community.general.homebrew:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ homebrew_formulas }}"

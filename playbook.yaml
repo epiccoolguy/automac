@@ -4,28 +4,6 @@
   vars_files:
     - vars.yaml
 
-  vars_prompt:
-    - name: password
-      private: true
-      prompt: "Password"
-
-  vars:
-    homebrew_installed_packages:
-      - bash
-      - alacritty
-      - coreutils
-      - curl
-      - git
-      - jq
-
-    homebrew_cask_appdir: /Applications
-    homebrew_cask_apps:
-      - amethyst
-      - git-credential-manager
-
-  # roles:
-  #   - geerlingguy.mac.homebrew
-
   tasks:
     - name: Install Homebrew
       ansible.builtin.import_tasks: tasks/install-homebrew.yaml
@@ -34,6 +12,10 @@
     - name: Install Bash
       ansible.builtin.import_tasks: tasks/install-bash.yaml
       tags: [bash]
+
+    - name: Install Homebrew formulas
+      ansible.builtin.import_tasks: tasks/install-homebrew-formulas.yaml
+      tags: [homebrew]
 
     # - name: Check if 'Oh My Zsh' is installed
     #   ansible.builtin.shell: test -e ~/.oh-my-zsh/oh-my-zsh.sh

@@ -1,1 +1,12 @@
 homebrew_path: "{{ (ansible_machine == 'arm64') | ternary('/opt/homebrew', '/usr/local/Homebrew') }}"
+
+homebrew_formulas:
+  - alacritty
+  - coreutils
+  - curl
+  - git
+  - jq
+
+homebrew_cask_apps:
+  - amethyst
+  - git-credential-manager
