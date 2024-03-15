@@ -51,12 +51,10 @@
   when: brew_mktempd.path is defined
 
 - name: Add Homebrew to shell profile
-  ansible.builtin.shell:
-    cmd: |
-      set -o pipefail
-      grep -qxF 'eval "$({{ homebrew_path }}/bin/brew shellenv)"' "{{ ansible_env.HOME }}/.bash_profile" || \
-      echo 'eval "$({{ homebrew_path }}/bin/brew shellenv)"' >> "{{ ansible_env.HOME }}/.bash_profile"
-    executable: /bin/bash
-  register: brew_shellenv
-  changed_when: brew_shellenv.rc != 0
-  when: not brew_exists.stat.exists
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.bash_profile"
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} Load Homebrew"
+    block: |
+      eval "$({{ homebrew_path }}/bin/brew shellenv)"
