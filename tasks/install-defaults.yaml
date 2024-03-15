@@ -29,14 +29,14 @@
   community.general.osx_defaults:
     domain: NSGlobalDomain
     key: "KeyRepeat"
-    type: int
+    type: float
     value: 2
 
 - name: Set Delay until repeat to Short
   community.general.osx_defaults:
     domain: NSGlobalDomain
     key: "InitialKeyRepeat"
-    type: int
+    type: float
     value: 15
 
 - name: Use function keys as standard function keys
