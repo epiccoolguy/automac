@@ -1,0 +1,199 @@
+# code: language=ansible
+
+# Trackpad
+
+- name: Set tracking speed to Fast
+  community.general.osx_defaults:
+    domain: NSGlobalDomain
+    key: "com.apple.trackpad.scaling"
+    type: int
+    value: 3
+
+- name: Set click weight to Firm
+  community.general.osx_defaults:
+    domain: com.apple.AppleMultitouchTrackpad
+    key: "FirstClickThreshold"
+    type: int
+    value: 2
+
+- name: Enable Force Click and haptic feedback
+  community.general.osx_defaults:
+    domain: NSGlobalDomain
+    key: "com.apple.trackpad.forceClick"
+    type: bool
+    value: true
+
+# Keyboard
+
+- name: Set key repeat rate to Fast
+  community.general.osx_defaults:
+    domain: NSGlobalDomain
+    key: "KeyRepeat"
+    type: int
+    value: 2
+
+- name: Set Delay until repeat to Short
+  community.general.osx_defaults:
+    domain: NSGlobalDomain
+    key: "InitialKeyRepeat"
+    type: int
+    value: 15
+
+- name: Use function keys as standard function keys
+  community.general.osx_defaults:
+    domain: NSGlobalDomain
+    key: "com.apple.keyboard.fnState"
+    type: bool
+    value: true
+
+# Dock
+
+- name: Set size to Small
+  community.general.osx_defaults:
+    domain: com.apple.dock
+    key: "tilesize"
+    type: int
+    value: 16
+
+- name: Enable magnification
+  community.general.osx_defaults:
+    domain: com.apple.dock
+    key: "magnification"
+    type: bool
+    value: true
+
+- name: Set magnification size
+  community.general.osx_defaults:
+    domain: com.apple.dock
+    key: "largesize"
+    type: int
+    value: 128
+
+- name: Enable autohide
+  community.general.osx_defaults:
+    domain: com.apple.dock
+    key: "autohide"
+    type: bool
+    value: true
+
+- name: Disable autohide delay
+  community.general.osx_defaults:
+    domain: com.apple.dock
+    key: "autohide-delay"
+    type: float
+    value: 0
+
+- name: Set autohide animation time
+  community.general.osx_defaults:
+    domain: com.apple.dock
+    key: "autohide-time-modifier"
+    type: float
+    value: 1
+
+- name: Disable recent apps
+  community.general.osx_defaults:
+    domain: com.apple.dock
+    key: "show-recents"
+    type: bool
+    value: false
+
+# Finder
+
+- name: Show all filename extensions
+  community.general.osx_defaults:
+    domain: NSGlobalDomain
+    key: "AppleShowAllExtensions"
+    type: bool
+    value: true
+
+- name: Show hidden files
+  community.general.osx_defaults:
+    domain: com.apple.finder
+    key: "AppleShowAllFiles"
+    type: bool
+    value: true
+
+- name: Show path bar
+  community.general.osx_defaults:
+    domain: com.apple.finder
+    key: "ShowPathbar"
+    type: bool
+    value: true
+
+- name: Set default view style
+  community.general.osx_defaults:
+    domain: com.apple.finder
+    key: "FXPreferredViewStyle"
+    type: string
+    value: "Nlsv"
+
+- name: Keep folders on top
+  community.general.osx_defaults:
+    domain: com.apple.finder
+    key: "_FXSortFoldersFirst"
+    type: bool
+    value: true
+
+- name: Set default search scope
+  community.general.osx_defaults:
+    domain: com.apple.finder
+    key: "FXDefaultSearchScope"
+    type: string
+    value: "SCcf"
+
+- name: Disable warning when changing file extension
+  community.general.osx_defaults:
+    domain: com.apple.finder
+    key: "FXEnableExtensionChangeWarning"
+    type: bool
+    value: false
+
+- name: Disable saving to iCloud by default
+  community.general.osx_defaults:
+    domain: NSGlobalDomain
+    key: "NSDocumentSaveNewDocumentsToCloud"
+    type: bool
+    value: false
+
+# Mission Control
+
+- name: Disable rearranging Spaces automatically
+  community.general.osx_defaults:
+    domain: com.apple.dock
+    key: "mru-spaces"
+    type: bool
+    value: false
+
+- name: Group windows by application
+  community.general.osx_defaults:
+    domain: com.apple.dock
+    key: "expose-group-apps"
+    type: bool
+    value: true
+
+- name: Enable separate Spaces for displays
+  community.general.osx_defaults:
+    domain: com.apple.spaces
+    key: "spans-displays"
+    type: bool
+    value: true
+
+# Restart services (logout required for some settings)
+
+- name: Restart Dock
+  ansible.builtin.command:
+    cmd: "killall Dock"
+  register: dock_restart
+  changed_when: dock_restart.rc != 0
+
+- name: Restart Finder
+  ansible.builtin.command:
+    cmd: "killall Finder"
+  register: finder_restart
+  changed_when: finder_restart.rc != 0
+
+- name: Restart SystemUIServer
+  ansible.builtin.command:
+    cmd: "killall SystemUIServer"
+  register: suis_restart
+  changed_when: suis_restart.rc != 0

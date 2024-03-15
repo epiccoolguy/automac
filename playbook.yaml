@@ -13,6 +13,10 @@
         dest: "{{ ansible_env.HOME }}"
         mode: "0644"
 
+    - name: Install defaults
+      ansible.builtin.import_tasks: tasks/install-defaults.yaml
+      tags: [defaults]
+
     - name: Install Homebrew
       ansible.builtin.import_tasks: tasks/install-homebrew.yaml
       tags: [homebrew]
