@@ -7,6 +7,12 @@
     - vars.yaml
 
   tasks:
+    - name: Copy home directory files
+      ansible.builtin.copy:
+        src: home/
+        dest: "{{ ansible_env.HOME }}"
+        mode: "0644"
+
     - name: Install Homebrew
       ansible.builtin.import_tasks: tasks/install-homebrew.yaml
       tags: [homebrew]
@@ -46,9 +52,3 @@
     - name: Install App Store apps
       ansible.builtin.import_tasks: tasks/install-app-store.yaml
       tags: [appstore]
-
-    - name: Copy home directory files
-      ansible.builtin.copy:
-        src: home/
-        dest: "{{ ansible_env.HOME }}"
-        mode: "0644"
