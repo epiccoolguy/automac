@@ -171,12 +171,12 @@
     type: bool
     value: true
 
-- name: Enable separate Spaces for displays
+- name: Disable separate Spaces for displays
   community.general.osx_defaults:
     domain: com.apple.spaces
     key: "spans-displays"
     type: bool
-    value: true
+    value: false
 
 # Restart services (logout required for some settings)
 
