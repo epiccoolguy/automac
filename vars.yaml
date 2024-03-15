@@ -7,6 +7,7 @@ homebrew_formulas:
   - git
   - jq
   - mas
+  - python3
 
 homebrew_casks:
   - amethyst

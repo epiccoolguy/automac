@@ -1,0 +1,19 @@
+# code: language=ansible
+
+- name: Install python3 venv
+  ansible.builtin.command:
+    cmd: python3 -m venv "$HOME/.python/venv"
+  register: venv
+  changed_when: venv.rc != 0
+
+- name: Add venv activation to .bash_profile
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.bash_profile"
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} Load venv"
+    block: |
+      if [ -f "$HOME/.python/venv/bin/activate" ]; then
+        export VIRTUAL_ENV_DISABLE_PROMPT=1
+        . "$HOME/.python/venv/bin/activate"
+      fi
