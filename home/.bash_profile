@@ -11,3 +11,9 @@ if [ -f "$HOME/.python/venv/bin/activate" ]; then
   . "$HOME/.python/venv/bin/activate"
 fi
 # END Load venv
+
+# BEGIN Load Rust
+if [ -f "$HOME/.cargo/env" ]; then
+  . "$HOME/.cargo/env"
+fi
+# END Load Rust

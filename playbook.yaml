@@ -53,6 +53,10 @@
       ansible.builtin.import_tasks: tasks/install-python.yaml
       tags: [languages]
 
+    - name: Install Rust
+      ansible.builtin.import_tasks: tasks/install-rust.yaml
+      tags: [languages]
+
     - name: Install App Store apps
       ansible.builtin.import_tasks: tasks/install-app-store.yaml
       tags: [appstore]
