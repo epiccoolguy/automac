@@ -7,6 +7,9 @@ homebrew_formulas:
   - git
   - jq
   - mas
+  - fzf
+  - fd
+  - bat
   # BEGIN asdf
   - openssl
   - readline

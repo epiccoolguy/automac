@@ -1,0 +1,14 @@
+# code: language=ansible
+
+- name: Add fzf key bindings, fuzzy completion, fd and bat integration to shell profile
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.bash_profile"
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} fzf"
+    block: |
+      eval "$(fzf --bash)"
+      export FZF_DEFAULT_COMMAND='fd --type file --hidden --exclude .git'
+      export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+      export FZF_DEFAULT_OPTS=""
+      export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS --preview 'bat --color=always {}'"

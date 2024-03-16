@@ -13,3 +13,11 @@ if [ -f "$HOME/.asdf/asdf.sh" ]; then
   . "$HOME/.asdf/asdf.sh"
 fi
 # END asdf
+
+# BEGIN fzf
+eval "$(fzf --bash)"
+export FZF_DEFAULT_COMMAND='fd --type file --hidden --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_OPTS=""
+export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS --preview 'bat --color=always {}'"
+# END fzf
