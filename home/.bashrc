@@ -1,5 +1,4 @@
-# If not running interactively, don't do anything.
-[ -z "$PS1" ] && return
+# shellcheck shell=bash
 
 # Shell prompt
 PS1='\t \u@\H \w \\$$? '

@@ -1,5 +1,4 @@
-# Source ~/.bashrc if running interactive.
-case "$-" in *i*) if [ -r ~/.bashrc ]; then . ~/.bashrc; fi;; esac
+# shellcheck shell=bash
 
 # BEGIN Load Homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
