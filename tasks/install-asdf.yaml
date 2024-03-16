@@ -1,7 +1,5 @@
 # code: language=ansible
 
-# curl https://api.github.com/repos/asdf-vm/asdf/releases/latest | grep -o '"tag_name": "[^"]*' | grep -o '[^"]*$'
-
 - name: Check if asdf is available
   ansible.builtin.stat:
     path: "{{ ansible_env.HOME }}/.asdf/asdf.sh"

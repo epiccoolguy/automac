@@ -53,17 +53,9 @@
       ansible.builtin.import_tasks: tasks/install-asdf.yaml
       tags: [tool-version-manager]
 
-    - name: Install Python
-      ansible.builtin.import_tasks: tasks/install-python.yaml
-      tags: [languages]
-
-    - name: Install Rust
-      ansible.builtin.import_tasks: tasks/install-rust.yaml
-      tags: [languages]
-
-    - name: Install Go
-      ansible.builtin.import_tasks: tasks/install-go.yaml
-      tags: [languages]
+    - name: Install asdf tools
+      ansible.builtin.import_tasks: tasks/install-asdf-tools.yaml
+      tags: [tool-version-manager]
 
     - name: Install App Store apps
       ansible.builtin.import_tasks: tasks/install-app-store.yaml

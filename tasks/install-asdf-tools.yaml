@@ -1,0 +1,21 @@
+# code: language=ansible
+
+- name: Install Rust
+  ansible.builtin.command: asdf plugin add rust https://github.com/code-lever/asdf-rust.git
+  register: asdf_plugin_rust
+  changed_when: asdf_plugin_rust.rc == 0 and asdf_plugin_rust.stdout != "Plugin named rust already added"
+
+- name: Install Go
+  ansible.builtin.command: asdf plugin add golang https://github.com/asdf-community/asdf-golang.git
+  register: asdf_plugin_golang
+  changed_when: asdf_plugin_golang.rc == 0 and asdf_plugin_golang.stdout != "Plugin named golang already added"
+
+- name: Install Node.js
+  ansible.builtin.command: asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+  register: asdf_plugin_nodejs
+  changed_when: asdf_plugin_nodejs.rc == 0 and asdf_plugin_nodejs.stdout != "Plugin named nodejs already added"
+
+- name: Install Python
+  ansible.builtin.command: asdf plugin add python https://github.com/danhper/asdf-python.git
+  register: asdf_plugin_python
+  changed_when: asdf_plugin_python.rc == 0 and asdf_plugin_python.stdout != "Plugin named python already added"

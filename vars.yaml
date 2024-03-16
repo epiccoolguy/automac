@@ -6,8 +6,15 @@ homebrew_formulas:
   - curl
   - git
   - jq
+  # asdf python
+  - openssl
+  - readline
+  - sqlite3
+  - xz
+  - zlib
+  - tcl-tk
+  # asdf python
   - mas
-  - python3
 
 homebrew_casks:
   - amethyst
