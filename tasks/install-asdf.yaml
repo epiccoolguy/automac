@@ -1,0 +1,56 @@
+# code: language=ansible
+
+# curl https://api.github.com/repos/asdf-vm/asdf/releases/latest | grep -o '"tag_name": "[^"]*' | grep -o '[^"]*$'
+
+- name: Check if asdf is available
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.asdf/asdf.sh"
+  register: asdf_exists
+
+- name: Create temporary directory for asdf
+  ansible.builtin.tempfile:
+    state: directory
+  register: asdf_mktempd
+  when: not asdf_exists.stat.exists
+
+- name: Download latest asdf release info
+  ansible.builtin.get_url:
+    url: https://api.github.com/repos/asdf-vm/asdf/releases/latest
+    dest: "{{ asdf_mktempd.path }}"
+    mode: "0644"
+  register: asdf_release_info
+  when: asdf_mktempd.path is defined
+
+- name: Parse asdf tag name
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      grep -o '"tag_name":\s\?"[^"]*' {{ asdf_release_info.dest }} | grep -o '[^"]*$'
+    executable: "{{ homebrew_path }}/bin/bash"
+  register: asdf_tag
+  changed_when: asdf_tag.rc != 0
+  when: asdf_release_info.dest is defined
+
+- name: Download asdf into home directory
+  ansible.builtin.git:
+    repo: https://github.com/asdf-vm/asdf.git
+    dest: "{{ ansible_env.HOME }}/.asdf"
+    version: "{{ asdf_tag.stdout }}"
+  when: asdf_tag.stdout is defined
+
+- name: Delete temporary directory for asdf
+  ansible.builtin.file:
+    path: "{{ asdf_mktempd.path }}"
+    state: absent
+  when: asdf_mktempd.path is defined
+
+- name: Add asdf to .bash_profile
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.bash_profile"
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} asdf"
+    block: |
+      if [ -f "$HOME/.asdf/asdf.sh" ]; then
+        . "$HOME/.asdf/asdf.sh"
+      fi
