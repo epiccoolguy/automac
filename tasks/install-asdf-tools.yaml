@@ -1,21 +1,41 @@
 # code: language=ansible
 
-- name: Install Rust
+- name: Install Rust asdf plugin
   ansible.builtin.command: asdf plugin add rust https://github.com/code-lever/asdf-rust.git
   register: asdf_plugin_rust
   changed_when: asdf_plugin_rust.rc == 0 and asdf_plugin_rust.stdout != "Plugin named rust already added"
 
-- name: Install Go
+- name: Install Go asdf plugin
   ansible.builtin.command: asdf plugin add golang https://github.com/asdf-community/asdf-golang.git
   register: asdf_plugin_golang
   changed_when: asdf_plugin_golang.rc == 0 and asdf_plugin_golang.stdout != "Plugin named golang already added"
 
-- name: Install Node.js
+- name: Install Node.js asdf plugin
   ansible.builtin.command: asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
   register: asdf_plugin_nodejs
   changed_when: asdf_plugin_nodejs.rc == 0 and asdf_plugin_nodejs.stdout != "Plugin named nodejs already added"
 
-- name: Install Python
+- name: Install Python asdf plugin
   ansible.builtin.command: asdf plugin add python https://github.com/danhper/asdf-python.git
   register: asdf_plugin_python
   changed_when: asdf_plugin_python.rc == 0 and asdf_plugin_python.stdout != "Plugin named python already added"
+
+- name: Install latest Rust
+  ansible.builtin.command: asdf install rust latest
+  register: asdf_rust_latest
+  changed_when: asdf_rust_latest.rc == 0 and "is already installed" not in asdf_rust_latest.stdout
+
+- name: Install latest Go
+  ansible.builtin.command: asdf install golang latest
+  register: asdf_golang_latest
+  changed_when: asdf_golang_latest.rc == 0 and "is already installed" not in asdf_golang_latest.stdout
+
+- name: Install latest Node.js
+  ansible.builtin.command: asdf install nodejs latest
+  register: asdf_nodejs_latest
+  changed_when: asdf_nodejs_latest.rc == 0 and "is already installed" not in asdf_nodejs_latest.stdout
+
+- name: Install latest Python
+  ansible.builtin.command: asdf install python latest
+  register: asdf_python_latest
+  changed_when: asdf_python_latest.rc == 0 and "is already installed" not in asdf_python_latest.stdout
