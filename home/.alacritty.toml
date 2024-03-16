@@ -5,6 +5,11 @@ option_as_alt = "Both"
 [font]
 normal = { family = "SF Mono", style = "Regular" }
 
+[cursor]
+style = { blinking = "On", shape = "Block" }
+blink_interval = 500
+blink_timeout = 0
+
 [keyboard]
 bindings = [
   # Move word by word
