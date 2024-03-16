@@ -1,0 +1,49 @@
+# code: language=ansible
+
+- name: Check if go is available
+  ansible.builtin.stat:
+    path: /usr/local/go/bin/go
+  register: go_exists
+
+- name: Create temporary directory for Go
+  ansible.builtin.tempfile:
+    state: directory
+  register: go_mktempd
+  when: not go_exists.stat.exists
+
+# stable versions are returned by default
+- name: Download Go stable release info
+  ansible.builtin.get_url:
+    url: https://go.dev/dl/?mode=json
+    dest: "{{ go_mktempd.path }}"
+    mode: "0644"
+  register: go_release_info
+  when: go_mktempd.path is defined
+
+# versions are returned sorted by newest first
+- name: Parse Go package download URL
+  ansible.builtin.command: jq -r '.[0] | .files[] | select(.kind=="installer" and .os=="darwin" and .arch=="arm64") | .filename' "{{ go_release_info.dest }}"
+  register: go_url
+  changed_when: false
+  when: go_release_info.dest is defined
+
+- name: Download Go package
+  ansible.builtin.get_url:
+    url: "https://go.dev/dl/{{ go_url.stdout }}"
+    dest: "{{ go_mktempd.path }}"
+    mode: "0644"
+  register: go_pkg
+  when: go_url.stdout is defined
+
+- name: Install Go package
+  ansible.builtin.command: installer -pkg "{{ go_pkg.dest }}" -target /
+  become: true
+  register: go_pkg_install
+  changed_when: go_pkg_install.rc != 0
+  when: go_pkg.dest is defined
+
+- name: Delete temporary directory for Go
+  ansible.builtin.file:
+    path: "{{ go_mktempd.path }}"
+    state: absent
+  when: go_mktempd.path is defined

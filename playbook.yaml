@@ -57,6 +57,10 @@
       ansible.builtin.import_tasks: tasks/install-rust.yaml
       tags: [languages]
 
+    - name: Install Go
+      ansible.builtin.import_tasks: tasks/install-go.yaml
+      tags: [languages]
+
     - name: Install App Store apps
       ansible.builtin.import_tasks: tasks/install-app-store.yaml
       tags: [appstore]
