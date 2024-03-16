@@ -1,5 +1,6 @@
 [window]
 decorations = "none"
+option_as_alt = "Both"
 
 [font]
 normal = { family = "SF Mono", style = "Regular" }
