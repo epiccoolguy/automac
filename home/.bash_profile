@@ -16,8 +16,9 @@ fi
 
 # BEGIN fzf
 eval "$(fzf --bash)"
-export FZF_DEFAULT_COMMAND='fd --type file --hidden --exclude .git'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_COMMAND='fd --hidden --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND --type file"
+export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type directory"
 export FZF_DEFAULT_OPTS=""
 export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS --preview 'bat --color=always {}'"
 # END fzf
