@@ -19,6 +19,9 @@ homebrew_formulas:
   - tcl-tk
   # END asdf
   - neovim
+  - make
+  - unzip
+  - gcc
   - ripgrep
 
 homebrew_casks:
