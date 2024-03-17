@@ -33,18 +33,6 @@
       ansible.builtin.import_tasks: tasks/install-homebrew-casks.yaml
       tags: [homebrew]
 
-    - name: Install SF Mono font
-      ansible.builtin.import_tasks: tasks/install-sf-mono.yaml
-      tags: [fonts]
-
-    - name: Install VS Code
-      ansible.builtin.import_tasks: tasks/install-vs-code.yaml
-      tags: [editors]
-
-    - name: Install Docker
-      ansible.builtin.import_tasks: tasks/install-docker.yaml
-      tags: [containers]
-
     - name: Install Git
       ansible.builtin.import_tasks: tasks/install-git.yaml
       tags: [version-control]
@@ -60,6 +48,22 @@
     - name: Install asdf tools
       ansible.builtin.import_tasks: tasks/install-asdf-tools.yaml
       tags: [tool-version-manager]
+
+    - name: Install Docker
+      ansible.builtin.import_tasks: tasks/install-docker.yaml
+      tags: [containers]
+
+    - name: Install neovim
+      ansible.builtin.import_tasks: tasks/install-nvim.yaml
+      tags: [editors]
+
+    - name: Install VS Code
+      ansible.builtin.import_tasks: tasks/install-vs-code.yaml
+      tags: [editors]
+
+    - name: Install SF Mono font
+      ansible.builtin.import_tasks: tasks/install-sf-mono.yaml
+      tags: [fonts]
 
     - name: Install App Store apps
       ansible.builtin.import_tasks: tasks/install-app-store.yaml

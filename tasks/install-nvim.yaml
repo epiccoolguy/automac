@@ -1,0 +1,7 @@
+# code: language=ansible
+
+- name: Download nvim configuration
+  ansible.builtin.git:
+    repo: https://github.com/epiccoolguy/kickstart.nvim.git
+    dest: "{{ ansible_env.HOME }}/.config/nvim"
+    version: master
