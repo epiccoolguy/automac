@@ -1,8 +1,11 @@
 # shellcheck shell=bash
 # shellcheck disable=SC1091
 
-# Source ~/.bashrc if running interactive.
-case "$-" in *i*) if [ -r "$HOME/.bashrc" ]; then . "$HOME/.bashrc"; fi;; esac
+# Source ~/.bashrc if it exists
+if [ -r "$HOME/.bashrc" ]; then . "$HOME/.bashrc"; fi
+
+# Set XDG Configuration Directory
+export XDG_CONFIG_HOME="$HOME/.config"
 
 # BEGIN Load Homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
