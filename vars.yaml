@@ -21,6 +21,7 @@ homebrew_formulas:
   - neovim
   - make
   - unzip
+  - gnu-tar
   - gcc
   - ripgrep
   - azure-cli
