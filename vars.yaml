@@ -25,6 +25,7 @@ homebrew_formulas:
   - gcc
   - ripgrep
   - azure-cli
+  - awscli
 
 homebrew_casks:
   - amethyst
