@@ -65,6 +65,10 @@
       ansible.builtin.import_tasks: tasks/install-sf-mono.yaml
       tags: [fonts]
 
+    - name: Install Google Cloud SDK
+      ansible.builtin.import_tasks: tasks/install-gcloud-cli.yaml
+      tags: [fonts]
+
     - name: Install App Store apps
       ansible.builtin.import_tasks: tasks/install-app-store.yaml
       tags: [appstore]
