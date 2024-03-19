@@ -23,6 +23,7 @@ homebrew_formulas:
   - unzip
   - gcc
   - ripgrep
+  - azure-cli
 
 homebrew_casks:
   - amethyst
