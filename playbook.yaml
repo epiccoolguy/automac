@@ -37,6 +37,10 @@
       ansible.builtin.import_tasks: tasks/install-git.yaml
       tags: [version-control]
 
+    - name: Install Alacritty
+      ansible.builtin.import_tasks: tasks/install-alacritty.yaml
+      tags: [terminals]
+
     - name: Install fzf
       ansible.builtin.import_tasks: tasks/install-fzf.yaml
       tags: [tools]

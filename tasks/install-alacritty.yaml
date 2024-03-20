@@ -1,0 +1,7 @@
+# code: language=ansible
+
+- name: Download alacritty theme
+  ansible.builtin.git:
+    repo: https://github.com/alacritty/alacritty-theme.git
+    dest: "{{ ansible_env.HOME }}/.config/alacritty/themes"
+    version: master
