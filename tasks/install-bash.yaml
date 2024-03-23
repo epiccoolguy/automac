@@ -5,6 +5,11 @@
     name: bash
     state: present
 
+- name: Install 'bash-completion@2' formula
+  community.general.homebrew:
+    name: bash-completion@2
+    state: present
+
 - name: Allow Bash as login shell
   ansible.builtin.lineinfile:
     path: /etc/shells
@@ -17,3 +22,24 @@
     name: "{{ ansible_env.USER }}"
     shell: "{{ homebrew_path }}/bin/bash"
   become: true
+
+- name: Add Homebrew completion definitions shell profile
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.bash_profile"
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} bash-completion@2"
+    block: |
+      if type brew &>/dev/null
+      then
+        HOMEBREW_PREFIX="$(brew --prefix)"
+        if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]
+        then
+          source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+        else
+          for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*
+          do
+            [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
+          done
+        fi
+      fi
