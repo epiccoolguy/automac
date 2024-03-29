@@ -29,3 +29,5 @@ python3 -m pip install --quiet ansible-core
 
 ansible-galaxy install -r requirements.yml
 ansible-playbook playbook.yaml --ask-become-pass --verbose
+
+rm -rf "$TEMP_DIR"
