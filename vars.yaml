@@ -2,6 +2,8 @@ homebrew_path: "{{ (ansible_machine == 'arm64') | ternary('/opt/homebrew', '/usr
 docker_arch: "{{ (ansible_machine == 'arm64') | ternary('arm64', 'amd64') }}"
 vscode_arch: "{{ (ansible_machine == 'arm64') | ternary('-arm64', '') }}"
 gcloud_arch: "{{ (ansible_machine == 'arm64') | ternary('arm', 'x86_64') }}"
+zsh_data_path: "{{ (ansible_machine == 'arm64') | ternary('/opt/homebrew/share/zsh', '/usr/local/share/zsh') }}"
+zsh_completion_path: "{{ (ansible_machine == 'arm64') | ternary('/opt/homebrew/share/zsh/site-functions', '/usr/local/share/zsh/site-functions') }}"
 
 homebrew_formulas:
   - alacritty

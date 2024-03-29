@@ -1,0 +1,15 @@
+# code: language=ansible
+
+- name: Create and own zsh data directory
+  ansible.builtin.file:
+    path: "{{ zsh_data_path }}"
+    state: directory
+    mode: "u+w"
+    owner: "{{ ansible_env.USER }}"
+
+- name: Create and own zsh completion directory
+  ansible.builtin.file:
+    path: "{{ zsh_completion_path }}"
+    state: directory
+    mode: "u+w"
+    owner: "{{ ansible_env.USER }}"

@@ -13,6 +13,10 @@
         dest: "{{ ansible_env.HOME }}"
         mode: "0644"
 
+    - name: Set up file permissions
+      ansible.builtin.import_tasks: tasks/file-permissions.yaml
+      tags: [permissions]
+
     - name: Install defaults
       ansible.builtin.import_tasks: tasks/install-defaults.yaml
       tags: [defaults]
