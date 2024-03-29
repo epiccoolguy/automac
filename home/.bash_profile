@@ -8,7 +8,12 @@ if [ -r "$HOME/.bashrc" ]; then . "$HOME/.bashrc"; fi
 export XDG_CONFIG_HOME="$HOME/.config"
 
 # BEGIN Load Homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+ARCH=$(uname -m)
+if [[ "$ARCH" == "arm64" ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ "$ARCH" == "x86_64" ]]; then
+  eval "$(/usr/local/Homebrew/bin/brew shellenv)"
+fi
 # END Load Homebrew
 
 # BEGIN asdf

@@ -1,4 +1,7 @@
 homebrew_path: "{{ (ansible_machine == 'arm64') | ternary('/opt/homebrew', '/usr/local/Homebrew') }}"
+docker_arch: "{{ (ansible_machine == 'arm64') | ternary('arm64', 'amd64') }}"
+vscode_arch: "{{ (ansible_machine == 'arm64') | ternary('-arm64', '') }}"
+gcloud_arch: "{{ (ansible_machine == 'arm64') | ternary('arm', 'x86_64') }}"
 
 homebrew_formulas:
   - alacritty

@@ -13,7 +13,7 @@
 
 - name: Download Docker
   ansible.builtin.get_url:
-    url: "https://desktop.docker.com/mac/main/arm64/Docker.dmg"
+    url: "https://desktop.docker.com/mac/main/{{ docker_arch }}/Docker.dmg"
     dest: "{{ docker_mktempd.path }}/Docker.dmg"
     mode: "0644"
   when: not docker_exists.stat.exists

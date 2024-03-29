@@ -13,7 +13,7 @@
 
 - name: Download gcloud CLI
   ansible.builtin.get_url:
-    url: "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-468.0.0-darwin-arm.tar.gz"
+    url: "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-468.0.0-darwin-{{ gcloud_arch }}.tar.gz"
     dest: "{{ gcloud_mktempd.path }}"
     mode: "0644"
   register: gcloud_download

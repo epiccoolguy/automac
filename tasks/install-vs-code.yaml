@@ -13,7 +13,7 @@
 
 - name: Download VS Code
   ansible.builtin.get_url:
-    url: "https://code.visualstudio.com/sha/download?build=stable&os=darwin-arm64"
+    url: "https://code.visualstudio.com/sha/download?build=stable&os=darwin{{ vscode_arch }}"
     dest: "{{ vsc_mktempd.path }}/vscode.zip"
     mode: "0644"
   register: vsc_download
