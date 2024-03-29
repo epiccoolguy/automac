@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 
 MIN_VERSION='3.12.2'
 CUR_VERSION=$(python3 --version | awk '{print $2}')
