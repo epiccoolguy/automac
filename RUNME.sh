@@ -19,6 +19,11 @@ TEMP_DIR=$(mktemp -d)
 python3 -m venv "$TEMP_DIR"
 . "$TEMP_DIR/bin/activate"
 
+if [[ $(type -t python3) = 'alias' ]];
+then
+  unalias python3
+fi
+
 python3 -m pip install --quiet --upgrade pip
 python3 -m pip install --quiet ansible-core
 
