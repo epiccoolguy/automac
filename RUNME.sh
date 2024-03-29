@@ -12,6 +12,7 @@ then
   curl -sLo "$PKG" "$PKG_URL"
   sudo installer -pkg "$PKG" -target /
   rm "$PKG"
+  alias python3='/usr/local/bin/python3'
 fi
 
 TEMP_DIR=$(mktemp -d)
