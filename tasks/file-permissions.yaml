@@ -6,6 +6,7 @@
     state: directory
     mode: "u+w"
     owner: "{{ ansible_env.USER }}"
+  become: true
 
 - name: Create and own zsh completion directory
   ansible.builtin.file:
@@ -13,3 +14,4 @@
     state: directory
     mode: "u+w"
     owner: "{{ ansible_env.USER }}"
+  become: true
