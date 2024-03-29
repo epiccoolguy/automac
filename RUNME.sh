@@ -1,5 +1,19 @@
 #! /bin/sh
 
+MIN_VERSION='3.12.2'
+CUR_VERSION=$(python3 --version | awk '{print $2}')
+VERSIONS=$(printf "%s\n%s" "$MIN_VERSION" "$CUR_VERSION")
+PKG="python-$MIN_VERSION-macos11.pkg"
+PKG_URL="https://www.python.org/ftp/python/$MIN_VERSION/$PKG"
+
+if ! sort --check=silent --version-sort <<< "$VERSIONS"
+then
+  echo "Currently installed Python is $CUR_VERSION. Downloading and installing Python $MIN_VERSION..."
+  curl -sLo "$PKG" "$PKG_URL"
+  sudo installer -pkg "$PKG" -target /
+  rm "$PKG"
+fi
+
 TEMP_DIR=$(mktemp -d)
 python3 -m venv "$TEMP_DIR"
 . "$TEMP_DIR/bin/activate"
