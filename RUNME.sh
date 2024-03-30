@@ -1,16 +1,23 @@
 #!/bin/bash
 
-python3 --version
+EXPECTED_PYTHON_VERSION='3.12.2'
+EXPECTED_ANSIBLE_VERSION='2.16.4'
+
+check_version() {
+  MIN_VERSION=$1
+  CUR_VERSION=$2
+  VERSIONS=$(printf "%s\n%s" "$MIN_VERSION" "$CUR_VERSION")
+
+  if ! sort --check=silent --version-sort <<< "$VERSIONS"
+  then
+    return 1
+  fi
+
+  return 0
+}
 
 TEMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TEMP_DIR"' EXIT
-
-ARCH=$(uname -m)
-if [[ "$ARCH" == "arm64" ]]; then
-  HOMEBREW_PREFIX="/opt/homebrew"
-elif [[ "$ARCH" == "x86_64" ]]; then
-  HOMEBREW_PREFIX="/usr/local"
-fi
 
 if ! command -v brew &>/dev/null
 then
@@ -24,38 +31,35 @@ then
 
   sudo installer -pkg "$TEMP_DIR/homebrew.pkg" -target /
 
+  ARCH=$(uname -m)
+  if [[ "$ARCH" == "arm64" ]]; then
+    HOMEBREW_PREFIX="/opt/homebrew"
+  elif [[ "$ARCH" == "x86_64" ]]; then
+    HOMEBREW_PREFIX="/usr/local"
+  fi
+
   eval "$("$HOMEBREW_PREFIX/bin/brew" shellenv)"
 fi
 
-MIN_VERSION='3.12.2'
-CUR_VERSION=$(python3 --version | awk '{print $2}')
-VERSIONS=$(printf "%s\n%s" "$MIN_VERSION" "$CUR_VERSION")
+CURRENT_PYTHON_VERSION=$(python3 --version | awk '{print $2}')
 
-if ! sort --check=silent --version-sort <<< "$VERSIONS"
+if ! check_version "$EXPECTED_PYTHON_VERSION" "$CURRENT_PYTHON_VERSION"
 then
-  echo "Currently installed Python is below minimal version $MIN_VERSION. Downloading and installing the latest Python..."
+  echo "Currently installed Python is below expected version $EXPECTED_PYTHON_VERSION. Downloading and installing the latest Python..."
 
-  # brewed versions of these respect the system trust store, enabling support for corporate root certificates
-  brew install python ca-certificates certifi
-
-  hash -r 2> /dev/null
-
-  python3 --version
+  brew install python
 fi
 
-# TEMP_DIR=$(mktemp -d)
-# python3 -m venv "$TEMP_DIR"
-# . "$TEMP_DIR/bin/activate"
+CURRENT_ANSIBLE_VERSION=$(ansible --version | sed -n 's/.*core \([^]]*\)].*/\1/p')
 
-# if [[ $(type -t python3) = 'alias' ]];
-# then
-#   unalias python3
-# fi
+if ! check_version "$EXPECTED_ANSIBLE_VERSION" "$CURRENT_ANSIBLE_VERSION"
+then
+  echo "Currently installed Ansible is below expected version $EXPECTED_ANSIBLE_VERSION. Downloading and installing the latest Ansible..."
 
-# python3 -m pip install --quiet --upgrade pip
-# python3 -m pip install --quiet ansible-core
+  brew install ansible
+fi
 
-# ansible-galaxy install -r requirements.yml
-# ansible-playbook playbook.yaml --ask-become-pass --verbose
+hash -r 2> /dev/null
 
-# rm -rf "$TEMP_DIR"
+ansible-galaxy install -r requirements.yml
+ansible-playbook playbook.yaml --ask-become-pass
