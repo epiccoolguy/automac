@@ -15,11 +15,6 @@
   register: asdf_plugin_nodejs
   changed_when: asdf_plugin_nodejs.rc == 0 and asdf_plugin_nodejs.stdout != "Plugin named nodejs already added"
 
-- name: Install Python asdf plugin
-  ansible.builtin.command: asdf plugin add python https://github.com/danhper/asdf-python.git
-  register: asdf_plugin_python
-  changed_when: asdf_plugin_python.rc == 0 and asdf_plugin_python.stdout != "Plugin named python already added"
-
 - name: Install latest Rust
   ansible.builtin.command: asdf install rust latest
   register: asdf_rust_latest
@@ -35,11 +30,6 @@
   register: asdf_nodejs_latest
   changed_when: asdf_nodejs_latest.rc == 0 and "is already installed" not in asdf_nodejs_latest.stdout
 
-- name: Install latest Python
-  ansible.builtin.command: asdf install python latest
-  register: asdf_python_latest
-  changed_when: asdf_python_latest.rc == 0 and "is already installed" not in asdf_python_latest.stdout
-
 - name: Set global Rust version
   ansible.builtin.command: asdf global rust latest
   register: asdf_rust_global
@@ -53,9 +43,4 @@
 - name: Set global Node.js version
   ansible.builtin.command: asdf global nodejs latest
   register: asdf_nodejs_global
-  changed_when: false
-
-- name: Set global Python version
-  ansible.builtin.command: asdf global python latest
-  register: asdf_python_global
   changed_when: false
