@@ -32,8 +32,7 @@ homebrew_formulas:
   - azure-cli
   - awscli
   - python
-  - ca-certificates # respects system trust store
-  - certifi # respects brewed ca-certificates
+  - ansible
 
 homebrew_casks:
   - amethyst
