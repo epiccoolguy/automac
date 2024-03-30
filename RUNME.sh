@@ -33,10 +33,12 @@ VERSIONS=$(printf "%s\n%s" "$MIN_VERSION" "$CUR_VERSION")
 
 if ! sort --check=silent --version-sort <<< "$VERSIONS"
 then
-  echo "Currently installed Python is below minimal version $MIN. Downloading and installing the latest Python..."
+  echo "Currently installed Python is below minimal version $MIN_VERSION. Downloading and installing the latest Python..."
 
   # brewed versions of these respect the system trust store, enabling support for corporate root certificates
   brew install python ca-certificates certifi
+
+  hash -r 2> /dev/null
 
   python3 --version
 fi
