@@ -1,5 +1,30 @@
 #!/bin/bash
 
+TEMP_DIR=$(mktemp -d)
+trap 'rm -rf "$TEMP_DIR"' EXIT
+
+ARCH=$(uname -m)
+if [[ "$ARCH" == "arm64" ]]; then
+  HOMEBREW_PREFIX="/opt/homebrew"
+elif [[ "$ARCH" == "x86_64" ]]; then
+  HOMEBREW_PREFIX="/usr/local"
+fi
+
+if ! command -v brew &>/dev/null
+then
+  echo "Homebrew is not installed. Downloading and installing Homebrew..."
+
+  curl -sLo "$TEMP_DIR/homebrew.json" https://api.github.com/repos/Homebrew/brew/releases/latest
+
+  HOMEBREW_PKG_URL=$(grep -o '"browser_download_url":\s\?"[^"]*pkg' "$TEMP_DIR/homebrew.json" | grep -o '[^"]*$')
+
+  curl -sLo "$TEMP_DIR/homebrew.pkg" "$HOMEBREW_PKG_URL"
+
+  sudo installer -pkg "$TEMP_DIR/homebrew.pkg" -target /
+
+  eval "$("$HOMEBREW_PREFIX/bin/brew" shellenv)"
+fi
+
 MIN_VERSION='3.12.2'
 CUR_VERSION=$(python3 --version | awk '{print $2}')
 VERSIONS=$(printf "%s\n%s" "$MIN_VERSION" "$CUR_VERSION")
