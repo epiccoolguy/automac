@@ -1,5 +1,7 @@
 #!/bin/bash
 
+python3 --version
+
 TEMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TEMP_DIR"' EXIT
 
@@ -28,32 +30,30 @@ fi
 MIN_VERSION='3.12.2'
 CUR_VERSION=$(python3 --version | awk '{print $2}')
 VERSIONS=$(printf "%s\n%s" "$MIN_VERSION" "$CUR_VERSION")
-PKG="python-$MIN_VERSION-macos11.pkg"
-PKG_URL="https://www.python.org/ftp/python/$MIN_VERSION/$PKG"
 
 if ! sort --check=silent --version-sort <<< "$VERSIONS"
 then
-  echo "Currently installed Python is $CUR_VERSION. Downloading and installing Python $MIN_VERSION..."
-  curl -sLo "$PKG" "$PKG_URL"
-  sudo installer -pkg "$PKG" -target /
-  rm "$PKG"
-  bash -c "/Applications/Python*/Install\ Certificates.command"
-  alias python3='/usr/local/bin/python3'
+  echo "Currently installed Python is below minimal version $MIN. Downloading and installing the latest Python..."
+
+  # brewed versions of these respect the system trust store, enabling support for corporate root certificates
+  brew install python ca-certificates certifi
+
+  python3 --version
 fi
 
-TEMP_DIR=$(mktemp -d)
-python3 -m venv "$TEMP_DIR"
-. "$TEMP_DIR/bin/activate"
+# TEMP_DIR=$(mktemp -d)
+# python3 -m venv "$TEMP_DIR"
+# . "$TEMP_DIR/bin/activate"
 
-if [[ $(type -t python3) = 'alias' ]];
-then
-  unalias python3
-fi
+# if [[ $(type -t python3) = 'alias' ]];
+# then
+#   unalias python3
+# fi
 
-python3 -m pip install --quiet --upgrade pip
-python3 -m pip install --quiet ansible-core
+# python3 -m pip install --quiet --upgrade pip
+# python3 -m pip install --quiet ansible-core
 
-ansible-galaxy install -r requirements.yml
-ansible-playbook playbook.yaml --ask-become-pass --verbose
+# ansible-galaxy install -r requirements.yml
+# ansible-playbook playbook.yaml --ask-become-pass --verbose
 
-rm -rf "$TEMP_DIR"
+# rm -rf "$TEMP_DIR"
