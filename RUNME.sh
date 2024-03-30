@@ -6,6 +6,12 @@ EXPECTED_ANSIBLE_VERSION='2.16.4'
 check_version() {
   MIN_VERSION=$1
   CUR_VERSION=$2
+
+  if [ -z "$MIN_VERSION" ] || [ -z "$CUR_VERSION" ]
+  then
+    return 1
+  fi
+
   VERSIONS=$(printf "%s\n%s" "$MIN_VERSION" "$CUR_VERSION")
 
   if ! sort --check=silent --version-sort <<< "$VERSIONS"
