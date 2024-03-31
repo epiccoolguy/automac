@@ -41,6 +41,13 @@
     state: absent
   when: gcloud_mktempd.path is defined
 
+- name: Copy patched ca-certificates from Homebrew
+  ansible.builtin.copy:
+    src: "{{ homebrew_path }}/etc/ca-certificates/cert.pem"
+    dest: "{{ ansible_env.HOME }}/.gcloud/google-cloud-sdk/lib/third_party/certifi/cacert.pem"
+    mode: "0644"
+    remote_src: true
+
 - name: Install gcloud
   ansible.builtin.shell:
     cmd: |
