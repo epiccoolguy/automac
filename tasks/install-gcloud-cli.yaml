@@ -47,9 +47,10 @@
       {{ ansible_env.HOME }}/.gcloud/google-cloud-sdk/install.sh \
         --quiet \
         --install-python=false \
+        --no-compile-python \
         --path-update=false \
         --command-completion=false \
-        --usage-reporting=true
+        --usage-reporting=false
     executable: "{{ homebrew_path }}/bin/bash"
   register: gcloud_install
   changed_when: true
