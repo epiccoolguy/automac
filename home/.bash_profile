@@ -32,8 +32,7 @@ export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS --preview 'bat --color=always {}'"
 # END fzf
 
 # BEGIN gcloud
-if [ -f "$HOME/.gcloud/google-cloud-sdk/path.bash.inc" ]; then . "$HOME/.gcloud/google-cloud-sdk/path.bash.inc"; fi
-if [ -f "$HOME/.gcloud/google-cloud-sdk/completion.bash.inc" ]; then . "$HOME/.gcloud/google-cloud-sdk/completion.bash.inc"; fi
+if [ -f "$(brew --prefix)/share/google-cloud-sdk/path.bash.inc" ]; then . "$(brew --prefix)/share/google-cloud-sdk/path.bash.inc"; fi
 # END gcloud
 
 # BEGIN bash-completion@2
