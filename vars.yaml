@@ -37,7 +37,6 @@ homebrew_formulas:
 homebrew_casks:
   - amethyst
   - git-credential-manager
-  - google-cloud-sdk
 
 appstore_apps:
   - 1569813296 # 1Password for Safari

@@ -1,10 +1,60 @@
 # code: language=ansible
 
 - name: Check if gcloud is available
-  ansible.builtin.command: command -v gcloud
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.gcloud/google-cloud-sdk/bin/gcloud"
   register: gcloud_exists
-  changed_when: false
-  failed_when: gcloud_exists.rc > 1
+
+- name: Create temporary directory for gcloud
+  ansible.builtin.tempfile:
+    state: directory
+  register: gcloud_mktempd
+  when: not gcloud_exists.stat.exists
+
+- name: Download gcloud CLI
+  ansible.builtin.get_url:
+    url: "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-468.0.0-darwin-{{ gcloud_arch }}.tar.gz"
+    dest: "{{ gcloud_mktempd.path }}"
+    mode: "0644"
+  register: gcloud_download
+  when: gcloud_mktempd.path is defined
+
+- name: Create permanent directory for gcloud
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.gcloud"
+    state: directory
+    mode: "0755"
+  register: gcloud_mkdir
+  when: gcloud_download.dest is defined
+
+- name: Extract application
+  ansible.builtin.unarchive:
+    src: "{{ gcloud_download.dest }}"
+    dest: "{{ ansible_env.HOME }}/.gcloud"
+    remote_src: true
+  register: gcloud_extract
+  when: gcloud_mkdir.path is defined
+
+- name: Delete temporary directory for gcloud
+  ansible.builtin.file:
+    path: "{{ gcloud_mktempd.path }}"
+    state: absent
+  when: gcloud_mktempd.path is defined
+
+- name: Install gcloud
+  ansible.builtin.shell:
+    cmd: |
+      {{ ansible_env.HOME }}/.gcloud/google-cloud-sdk/install.sh \
+        --quiet \
+        --install-python=false \
+        --no-compile-python \
+        --path-update=false \
+        --command-completion=false \
+        --usage-reporting=false
+    executable: "{{ homebrew_path }}/bin/bash"
+  register: gcloud_install
+  changed_when: true
+  when: gcloud_extract.dest is defined
 
 - name: Add gcloud to .bash_profile
   ansible.builtin.blockinfile:
@@ -13,11 +63,12 @@
     prepend_newline: true
     marker: "# {mark} gcloud"
     block: |
-      if [ -f "$(brew --prefix)/share/google-cloud-sdk/path.bash.inc" ]; then . "$(brew --prefix)/share/google-cloud-sdk/path.bash.inc"; fi
-  when: gcloud_exists.rc == 0
+      if [ -f "$HOME/.gcloud/google-cloud-sdk/path.bash.inc" ]; then . "$HOME/.gcloud/google-cloud-sdk/path.bash.inc"; fi
+      if [ -f "$HOME/.gcloud/google-cloud-sdk/completion.bash.inc" ]; then . "$HOME/.gcloud/google-cloud-sdk/completion.bash.inc"; fi
+  when: gcloud_exists.stat.exists or (gcloud_install.rc is defined and gcloud_install.rc == 0)
 
 - name: Update gcloud
-  ansible.builtin.command: gcloud components update --quiet
+  ansible.builtin.command:
+    cmd: "{{ ansible_env.HOME }}/.gcloud/google-cloud-sdk/bin/gcloud components update --quiet"
   register: gcloud_update
   changed_when: gcloud_update.rc == 0 and "All components are up to date." not in gcloud_update.stderr
-  when: gcloud_exists.rc == 0
