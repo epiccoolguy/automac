@@ -52,6 +52,8 @@
         --command-completion=false \
         --usage-reporting=false
     executable: "{{ homebrew_path }}/bin/bash"
+  environment:
+    CLOUDSDK_PYTHON: python3
   register: gcloud_install
   changed_when: true
   when: gcloud_extract.dest is defined
@@ -63,6 +65,7 @@
     prepend_newline: true
     marker: "# {mark} gcloud"
     block: |
+      export CLOUDSDK_PYTHON=python3
       if [ -f "$HOME/.gcloud/google-cloud-sdk/path.bash.inc" ]; then . "$HOME/.gcloud/google-cloud-sdk/path.bash.inc"; fi
       if [ -f "$HOME/.gcloud/google-cloud-sdk/completion.bash.inc" ]; then . "$HOME/.gcloud/google-cloud-sdk/completion.bash.inc"; fi
   when: gcloud_exists.stat.exists or (gcloud_install.rc is defined and gcloud_install.rc == 0)
@@ -70,5 +73,7 @@
 - name: Update gcloud
   ansible.builtin.command:
     cmd: "{{ ansible_env.HOME }}/.gcloud/google-cloud-sdk/bin/gcloud components update --quiet"
+  environment:
+    CLOUDSDK_PYTHON: python3
   register: gcloud_update
   changed_when: gcloud_update.rc == 0 and "All components are up to date." not in gcloud_update.stderr
