@@ -1,10 +1,7 @@
-[user]
-  name = "Miguel Lo-A-Foe"
-  email = "miguel@loafoe.dev"
 [push]
 	autoSetupRemote = true
 [credential]
-	helper = 
+	helper =
 	helper = /usr/local/bin/git-credential-manager
 [credential "https://dev.azure.com"]
 	useHttpPath = true

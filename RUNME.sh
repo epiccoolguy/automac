@@ -68,4 +68,4 @@ fi
 hash -r 2> /dev/null
 
 ansible-galaxy install -r requirements.yml
-ansible-playbook playbook.yaml --ask-become-pass
+ansible-playbook playbook.yaml --ask-become-pass "$@"

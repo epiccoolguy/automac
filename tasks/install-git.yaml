@@ -1,0 +1,17 @@
+# code: language=ansible
+
+- name: Copy .gitconfig files into home directory
+  ansible.builtin.copy:
+    src: gitconfig/
+    dest: "{{ ansible_env.HOME }}"
+    mode: "u+rw"
+    force: false
+
+- name: Add Git user details to .gitconfig.default
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.gitconfig.default"
+    marker: "# {mark} gituser"
+    block: |
+      [user]
+        name = "{{ git_user_name }}"
+        email = "{{ git_user_email }}"
