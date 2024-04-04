@@ -1,0 +1,22 @@
+{
+  "cSpell.language": "en-GB,en,nl",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.fontFamily": "SF Mono, Menlo, Monaco, 'Courier New', monospace",
+  "editor.formatOnSave": true,
+  "editor.insertSpaces": true,
+  "editor.minimap.enabled": false,
+  "editor.stickyScroll.defaultModel": "foldingProviderModel",
+  "editor.stickyScroll.enabled": true,
+  "editor.tabSize": 2,
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "gitlens.plusFeatures.enabled": false,
+  "redhat.telemetry.enabled": false,
+  "security.workspace.trust.untrustedFiles": "open",
+  "typescript.tsserver.log": "off"
+}

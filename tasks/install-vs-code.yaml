@@ -46,3 +46,9 @@
     marker: "# {mark} vscode"
     block: |
       export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+
+- name: Copy VS Code user settings
+  ansible.builtin.copy:
+    src: vscode/user/
+    dest: "{{ ansible_env.HOME }}/Library/Application Support/Code/User/"
+    mode: "u+rw"
