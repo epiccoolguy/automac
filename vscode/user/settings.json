@@ -18,5 +18,9 @@
   "gitlens.plusFeatures.enabled": false,
   "redhat.telemetry.enabled": false,
   "security.workspace.trust.untrustedFiles": "open",
-  "typescript.tsserver.log": "off"
+  "typescript.tsserver.log": "off",
+  "window.autoDetectColorScheme": true,
+  "workbench.colorTheme": "GitHub Dark Default",
+  "workbench.preferredDarkColorTheme": "GitHub Dark Default",
+  "workbench.preferredLightColorTheme": "GitHub Light Default"
 }
