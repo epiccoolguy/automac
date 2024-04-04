@@ -1,0 +1,5 @@
+[user]
+  name = "Miguel Lo-A-Foe"
+  email = "miguel@loafoe.dev"
+[push]
+	autoSetupRemote = true

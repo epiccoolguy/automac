@@ -1,0 +1,5 @@
+[include]
+  path = ~/.gitconfig.default
+
+[includeIf "gitdir:~/github.com/epiccoolguy/**/.git"]
+  path = ~/.gitconfig.epiccoolguy
