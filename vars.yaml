@@ -1,3 +1,6 @@
+install_gcloud: false
+install_mas: false
+
 homebrew_path: "{{ (ansible_machine == 'arm64') | ternary('/opt/homebrew', '/usr/local') }}"
 docker_arch: "{{ (ansible_machine == 'arm64') | ternary('arm64', 'amd64') }}"
 vscode_arch: "{{ (ansible_machine == 'arm64') | ternary('-arm64', '') }}"

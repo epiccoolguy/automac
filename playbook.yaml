@@ -75,8 +75,10 @@
 
     - name: Install Google Cloud SDK
       ansible.builtin.import_tasks: tasks/install-gcloud-cli.yaml
+      when: install_gcloud
       tags: [fonts]
 
     - name: Install App Store apps
       ansible.builtin.import_tasks: tasks/install-app-store.yaml
+      when: install_mas
       tags: [appstore]

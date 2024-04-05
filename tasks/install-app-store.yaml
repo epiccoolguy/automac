@@ -4,4 +4,3 @@
   community.general.mas:
     id: "{{ appstore_apps }}" # noqa: args[module]
     state: present
-  ignore_errors: true # noqa: ignore-errors
