@@ -42,6 +42,12 @@
   register: asdf_nodejs_latest
   changed_when: asdf_nodejs_latest.rc == 0 and "is already installed" not in asdf_nodejs_latest.stdout
 
+- name: Enable corepack and re-shim Node.js
+  ansible.builtin.shell:
+    cmd: . "{{ ansible_env.HOME }}/.asdf/asdf.sh" && corepack enable && asdf reshim nodejs
+    executable: "{{ homebrew_path }}/bin/bash"
+  changed_when: false
+
 - name: Set global Rust version
   ansible.builtin.shell:
     cmd: . "{{ ansible_env.HOME }}/.asdf/asdf.sh" && asdf global rust latest
