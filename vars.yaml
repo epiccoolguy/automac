@@ -62,7 +62,6 @@ vscode_extensions:
   - hashicorp.terraform
   - humao.rest-client
   - mikestead.dotenv
-  - mindaro-dev.file-downloader
   - ms-python.debugpy
   - ms-python.python
   - ms-python.vscode-pylance
