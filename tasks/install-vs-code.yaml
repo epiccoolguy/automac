@@ -52,3 +52,11 @@
     src: vscode/user/
     dest: "{{ ansible_env.HOME }}/Library/Application Support/Code/User/"
     mode: "u+rw"
+
+- name: Install VS Code extensions
+  ansible.builtin.shell:
+    cmd: . "{{ ansible_env.HOME }}/.bash_profile" && code --install-extension {{ item }}
+    executable: "{{ homebrew_path }}/bin/bash"
+  register: vscode_extensions_installed
+  changed_when: vscode_extensions_installed.rc == 0 and "is already installed" not in vscode_extensions_installed.stdout
+  loop: "{{ vscode_extensions }}"

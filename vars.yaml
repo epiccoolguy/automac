@@ -47,5 +47,34 @@ appstore_apps:
   - 1438243180 # Dark Reader for Safari
   - 1606897889 # Consent-O-Matic
 
+vscode_extensions:
+  - arcanis.vscode-zipfs
+  - bierner.markdown-mermaid
+  - davidanson.vscode-markdownlint
+  - dbaeumer.vscode-eslint
+  - eamodio.gitlens
+  - editorconfig.editorconfig
+  - esbenp.prettier-vscode
+  - github.copilot
+  - github.copilot-chat
+  - github.github-vscode-theme
+  - golang.go
+  - hashicorp.terraform
+  - humao.rest-client
+  - mikestead.dotenv
+  - mindaro-dev.file-downloader
+  - ms-python.debugpy
+  - ms-python.python
+  - ms-python.vscode-pylance
+  - orta.vscode-jest
+  - redhat.ansible
+  - redhat.vscode-yaml
+  - rust-lang.rust-analyzer
+  - streetsidesoftware.code-spell-checker
+  - streetsidesoftware.code-spell-checker-british-english
+  - streetsidesoftware.code-spell-checker-dutch
+  - tamasfe.even-better-toml
+  - timonwong.shellcheck
+
 git_user_name: "Miguel Lo-A-Foe"
 git_user_email: "miguel@loafoe.dev"
