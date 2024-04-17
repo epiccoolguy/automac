@@ -1,7 +1,7 @@
 # shellcheck shell=bash
 
 # Shell prompt
-PS1='\t \u@\H \w \\$$? '
+PS1='\t \u@\h \W \\$$? '
 
 # Set default locale to ensure commands like tr work as expected.
 LC_CTYPE=C
